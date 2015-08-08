@@ -1,3 +1,4 @@
+
 /**
  * @see http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
  * @author f3ath
@@ -10,7 +11,8 @@ public class Percolation {
 
     /**
      * Create N-by-N grid, with all sites blocked
-     * @param N 
+     *
+     * @param N
      */
     public Percolation(int N) {
         if (N < 1) {
@@ -23,9 +25,10 @@ public class Percolation {
 
     public static void main(String[] args) {
     }
-    
+
     /**
      * Open site (row i, column j) if it is not open already
+     *
      * @param i
      * @param j
      */
@@ -36,7 +39,7 @@ public class Percolation {
         if (open[i][j]) {
             return;
         }
-        
+
         open[i][j] = true;
 
         if (i > 0 && open[i - 1][j]) {
@@ -72,13 +75,15 @@ public class Percolation {
     public boolean isFull(int i, int j) {
         i = convertIndex(i);
         j = convertIndex(j);
-        
+
         if (!open[i][j]) {
             return false;
         }
 
+        int id = union.find(getUnionIndex(i, j));
+
         for (int k = 0; k < size; k++) {
-            if (open[0][k] && union.connected(getUnionIndex(i, j), getUnionIndex(0, k))) {
+            if (open[0][k] && id == union.find(getUnionIndex(0, k))) {
                 return true;
             }
         }
@@ -99,8 +104,7 @@ public class Percolation {
     }
 
     /**
-     * Convert 1-based to 0-based
-     * and check correctness
+     * Convert 1-based to 0-based and check correctness
      *
      * @param i
      * @return Converted index
@@ -115,6 +119,7 @@ public class Percolation {
 
     /**
      * Convert 2-dimensional index into 1-dimensional
+     *
      * @param i
      * @param j
      * @return 1-dim index
