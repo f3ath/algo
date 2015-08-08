@@ -5,16 +5,6 @@ public class Percolation {
     private boolean[][] open;
 
     static public void main(String[] args) {
-        Percolation p = new Percolation(2);
-        System.out.println(p.percolates());
-        p.open(1, 1);
-        System.out.println(p.percolates());
-        p.open(1, 2);
-        System.out.println(p.percolates());
-        p.open(2, 1);
-        System.out.println(p.percolates());
-        p.open(2, 2);
-        System.out.println(p.percolates());
     }
 
     public Percolation(int N) {
