@@ -18,60 +18,63 @@ public class PercolationStats {
      * @param T
      */
     public PercolationStats(int N, int T) {
+        if (N < 1) {
+            throw new java.lang.IllegalArgumentException("Invalid grid size");
+        }
+        if (T < 2) {
+            throw new java.lang.IllegalArgumentException("Invalid number of experiments");
+        }
+        size = N;
+        times = T;
+        rand = new int[N * N];
 
-        this.size = N;
-
-        this.times = T;
-        this.rand = new int[N * N];
-
-        for (int i = 0; i < this.rand.length; i++) {
-            this.rand[i] = i;
+        for (int i = 0; i < rand.length; i++) {
+            rand[i] = i;
         }
 
         double[] results = new double[T];
         double resultsSum = 0;
 
         for (int i = 0; i < T; i++) {
-            results[i] = this.getExperimentResult();
+            results[i] = getExperimentResult();
             resultsSum += results[i];
         }
 
-        this.mean = resultsSum / T;
+        mean = resultsSum / T;
 
-        this.stddev = 0;
+        stddev = 0;
         for (int i = 0; i < T; i++) {
-            double x = this.mean - results[i];
-            this.stddev += (x * x);
+            stddev += Math.pow(mean - results[i], 2);
         }
-        this.stddev = Math.sqrt(this.stddev / (T - 1));
+        stddev = Math.sqrt(stddev / (T - 1));
     }
 
     /**
      * @return Sample mean of percolation threshold
      */
     public double mean() {
-        return this.mean;
+        return mean;
     }
 
     /**
      * @return Sample standard deviation of percolation threshold
      */
     public double stddev() {
-        return this.stddev;
+        return stddev;
     }
 
     /**
      * @return low endpoint of 95% confidence interval
      */
     public double confidenceLo() {
-        return this.mean() - 1.96 * this.stddev() / Math.sqrt(this.times);
+        return mean() - 1.96 * stddev() / Math.sqrt(times);
     }
 
     /**
      * @return high endpoint of 95% confidence interval
      */
     public double confidenceHi() {
-        return this.mean() + 1.96 * this.stddev() / Math.sqrt(this.times);
+        return mean() + 1.96 * stddev() / Math.sqrt(times);
     }
 
     /**
@@ -86,12 +89,7 @@ public class PercolationStats {
         }
         int n = Integer.parseInt(args[0]);
         int t = Integer.parseInt(args[1]);
-        if (n < 1) {
-            throw new java.lang.IllegalArgumentException("Invalid grid size");
-        }
-        if (t < 2) {
-            throw new java.lang.IllegalArgumentException("Invalid number of experiments");
-        }
+
         
         PercolationStats stats = new PercolationStats(n, t);
 
@@ -115,13 +113,13 @@ public class PercolationStats {
     }
 
     private double getExperimentResult() {
-        Percolation p = new Percolation(this.size);
-        this.shuffleRand(this.rand);
+        Percolation p = new Percolation(size);
+        shuffleRand(rand);
         int step = 0;
         while (!p.percolates()) {
-            int index = this.rand[step++];
-            p.open(index / this.size + 1, index % this.size + 1);
+            int index = rand[step++];
+            p.open(index / size + 1, index % size + 1);
         }
-        return step / (double) (this.size * this.size);
+        return step / (double) (size * size);
     }
 }
