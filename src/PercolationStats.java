@@ -3,6 +3,7 @@
  * @see http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
  * @author f3ath
  */
+
 public class PercolationStats {
 
     private int size;
@@ -19,10 +20,10 @@ public class PercolationStats {
      */
     public PercolationStats(int N, int T) {
         if (N < 1) {
-            throw new java.lang.IllegalArgumentException("Invalid grid size");
+            throw new IllegalArgumentException("Invalid grid size");
         }
-        if (T < 2) {
-            throw new java.lang.IllegalArgumentException("Invalid number of experiments");
+        if (T < 1) {
+            throw new IllegalArgumentException("Invalid number of experiments");
         }
         size = N;
         times = T;
@@ -46,7 +47,7 @@ public class PercolationStats {
         for (int i = 0; i < T; i++) {
             stddev += Math.pow(mean - results[i], 2);
         }
-        stddev = Math.sqrt(stddev / (T - 1));
+        stddev = Math.sqrt(stddev / T);
     }
 
     /**
