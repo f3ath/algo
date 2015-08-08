@@ -11,29 +11,29 @@ public class PercolationStats {
     private double[] results;
 
     /**
-     * Perform T independent experiments on an N-by-N grid
+     * Perform experimentsCount independent experiments on an size-by-size grid
      *
-     * @param N
-     * @param T
+     * @param size
+     * @param experimentsCount
      */
-    public PercolationStats(int N, int T) {
-        if (N < 1) {
+    public PercolationStats(int size, int experimentsCount) {
+        if (size < 1) {
             throw new IllegalArgumentException("Invalid grid size");
         }
-        if (T < 1) {
+        if (experimentsCount < 1) {
             throw new IllegalArgumentException("Invalid number of experiments");
         }
-        size = N;
-        times = T;
-        rand = new int[N * N];
+        this.size = size;
+        times = experimentsCount;
+        rand = new int[size * size];
 
         for (int i = 0; i < rand.length; i++) {
             rand[i] = i;
         }
 
-        results = new double[T];
+        results = new double[experimentsCount];
 
-        for (int i = 0; i < T; i++) {
+        for (int i = 0; i < experimentsCount; i++) {
             results[i] = getExperimentResult();
         }
     }
@@ -86,13 +86,17 @@ public class PercolationStats {
         System.out.format("95%% confidence interval = %f, %f\n", stats.confidenceLo(), stats.confidenceHi());
     }
 
+    /**
+     * Run experiment
+     * @return 
+     */
     private double getExperimentResult() {
         StdRandom.shuffle(rand);
-        Percolation p = new Percolation(size);
+        Percolation percolation = new Percolation(size);
         int step = 0;
-        while (!p.percolates()) {
+        while (!percolation.percolates()) {
             int index = rand[step++];
-            p.open(index / size + 1, index % size + 1);
+            percolation.open(index / size + 1, index % size + 1);
         }
         return step / (double) (size * size);
     }

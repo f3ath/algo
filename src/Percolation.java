@@ -12,15 +12,15 @@ public class Percolation {
     private boolean[][] open;
 
     /**
-     * Create N-by-N grid, with all sites blocked
+     * Create size-by-size grid, with all sites blocked
      *
-     * @param N
+     * @param size
      */
-    public Percolation(int N) {
-        if (N < 1) {
-            throw new java.lang.IllegalArgumentException("Positive number expected");
+    public Percolation(int size) {
+        if (size < 1) {
+            throw new IllegalArgumentException("Positive number expected");
         }
-        size = N;
+        this.size = size;
         top = size * size;
         bottom = top + 1;
         union = new WeightedQuickUnionUF(size * size + 2);
@@ -31,67 +31,66 @@ public class Percolation {
     }
 
     /**
-     * Open site (row i, column j) if it is not open already
+     * Open site (row row, column col) if it is not open already
      *
-     * @param i
-     * @param j
+     * @param row
+     * @param col
      */
-    public void open(int i, int j) {
-        i = convertIndex(i);
-        j = convertIndex(j);
+    public void open(int row, int col) {
+        row = convertIndex(row);
+        col = convertIndex(col);
 
-        if (open[i][j]) {
+        if (open[row][col]) {
             return;
         }
 
-        open[i][j] = true;
+        open[row][col] = true;
 
-        if (i == 0) {
-            union.union(top, getUnionIndex(i, j));
+        if (row == 0) {
+            union.union(top, getUnionIndex(row, col));
         }
-        if (i == size - 1) {
-            union.union(bottom, getUnionIndex(i, j));
+        if (row == size - 1) {
+            union.union(bottom, getUnionIndex(row, col));
+        }
 
+        if (row > 0 && open[row - 1][col]) {
+            union.union(getUnionIndex(row, col), getUnionIndex(row - 1, col));
         }
-
-        if (i > 0 && open[i - 1][j]) {
-            union.union(getUnionIndex(i, j), getUnionIndex(i - 1, j));
+        if (col > 0 && open[row][col - 1]) {
+            union.union(getUnionIndex(row, col), getUnionIndex(row, col - 1));
         }
-        if (j > 0 && open[i][j - 1]) {
-            union.union(getUnionIndex(i, j), getUnionIndex(i, j - 1));
+        if (row < size - 1 && open[row + 1][col]) {
+            union.union(getUnionIndex(row, col), getUnionIndex(row + 1, col));
         }
-        if (i < size - 1 && open[i + 1][j]) {
-            union.union(getUnionIndex(i, j), getUnionIndex(i + 1, j));
-        }
-        if (j < size - 1 && open[i][j + 1]) {
-            union.union(getUnionIndex(i, j), getUnionIndex(i, j + 1));
+        if (col < size - 1 && open[row][col + 1]) {
+            union.union(getUnionIndex(row, col), getUnionIndex(row, col + 1));
         }
     }
 
     /**
-     * @param i
-     * @param j
-     * @return Is site (row i, column j) open?
+     * @param row
+     * @param col
+     * @return Is site (row row, column col) open?
      */
-    public boolean isOpen(int i, int j) {
-        i = convertIndex(i);
-        j = convertIndex(j);
-        return open[i][j];
+    public boolean isOpen(int row, int col) {
+        row = convertIndex(row);
+        col = convertIndex(col);
+        return open[row][col];
     }
 
     /**
-     * @param i
-     * @param j
-     * @return Is site (row i, column j) full?
+     * @param row
+     * @param col
+     * @return Is site (row row, column col) full?
      */
-    public boolean isFull(int i, int j) {
-        i = convertIndex(i);
-        j = convertIndex(j);
+    public boolean isFull(int row, int col) {
+        row = convertIndex(row);
+        col = convertIndex(col);
 
-        if (!open[i][j]) {
+        if (!open[row][col]) {
             return false;
         }
-        return union.connected(top, getUnionIndex(i, j));
+        return union.connected(top, getUnionIndex(row, col));
     }
 
     /**
@@ -104,25 +103,25 @@ public class Percolation {
     /**
      * Convert 1-based to 0-based and check correctness
      *
-     * @param i
+     * @param index
      * @return Converted index
      */
-    private int convertIndex(int i) {
-        i--;
-        if (i < 0 || i >= size) {
+    private int convertIndex(int index) {
+        index--;
+        if (index < 0 || index >= size) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        return i;
+        return index;
     }
 
     /**
      * Convert 2-dimensional index into 1-dimensional
      *
-     * @param i
-     * @param j
+     * @param row
+     * @param col
      * @return 1-dim index
      */
-    private int getUnionIndex(int i, int j) {
-        return size * i + j;
+    private int getUnionIndex(int row, int col) {
+        return size * row + col;
     }
 }
