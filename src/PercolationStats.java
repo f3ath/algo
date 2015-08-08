@@ -3,14 +3,12 @@
  * @see http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
  * @author f3ath
  */
-
 public class PercolationStats {
 
     private int size;
     private int times;
     private int[] rand;
-    private double mean = 0;
-    private double stddev = 0;
+    private double[] results;
 
     /**
      * Perform T independent experiments on an N-by-N grid
@@ -33,35 +31,25 @@ public class PercolationStats {
             rand[i] = i;
         }
 
-        double[] results = new double[T];
-        double resultsSum = 0;
+        results = new double[T];
 
         for (int i = 0; i < T; i++) {
             results[i] = getExperimentResult();
-            resultsSum += results[i];
         }
-
-        mean = resultsSum / T;
-
-        stddev = 0;
-        for (int i = 0; i < T; i++) {
-            stddev += Math.pow(mean - results[i], 2);
-        }
-        stddev = Math.sqrt(stddev / (T - 1));
     }
 
     /**
      * @return Sample mean of percolation threshold
      */
     public double mean() {
-        return mean;
+        return StdStats.mean(results);
     }
 
     /**
      * @return Sample standard deviation of percolation threshold
      */
     public double stddev() {
-        return stddev;
+        return StdStats.stddev(results);
     }
 
     /**
@@ -91,7 +79,6 @@ public class PercolationStats {
         int n = Integer.parseInt(args[0]);
         int t = Integer.parseInt(args[1]);
 
-        
         PercolationStats stats = new PercolationStats(n, t);
 
         System.out.format("mean                    = %f\n", stats.mean());
@@ -99,23 +86,9 @@ public class PercolationStats {
         System.out.format("95%% confidence interval = %f, %f\n", stats.confidenceLo(), stats.confidenceHi());
     }
 
-    /**
-     * Shuffle the array
-     *
-     * @param a
-     */
-    private void shuffleRand(int[] a) {
-        for (int i = a.length - 1; i > 0; i--) {
-            int index = StdRandom.uniform(i);
-            int swp = a[i];
-            a[i] = a[index];
-            a[index] = swp;
-        }
-    }
-
     private double getExperimentResult() {
+        StdRandom.shuffle(rand);
         Percolation p = new Percolation(size);
-        shuffleRand(rand);
         int step = 0;
         while (!p.percolates()) {
             int index = rand[step++];

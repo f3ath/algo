@@ -7,6 +7,8 @@ public class Percolation {
 
     private WeightedQuickUnionUF union;
     private int size;
+    private int top;
+    private int bottom;
     private boolean[][] open;
 
     /**
@@ -19,7 +21,9 @@ public class Percolation {
             throw new java.lang.IllegalArgumentException("Positive number expected");
         }
         size = N;
-        union = new WeightedQuickUnionUF(size * size);
+        top = size * size;
+        bottom = top + 1;
+        union = new WeightedQuickUnionUF(size * size + 2);
         open = new boolean[size][size];
     }
 
@@ -41,6 +45,14 @@ public class Percolation {
         }
 
         open[i][j] = true;
+
+        if (i == 0) {
+            union.union(top, getUnionIndex(i, j));
+        }
+        if (i == size - 1) {
+            union.union(bottom, getUnionIndex(i, j));
+
+        }
 
         if (i > 0 && open[i - 1][j]) {
             union.union(getUnionIndex(i, j), getUnionIndex(i - 1, j));
@@ -79,54 +91,14 @@ public class Percolation {
         if (!open[i][j]) {
             return false;
         }
-
-        int id = union.find(getUnionIndex(i, j));
-
-        for (int k = 0; k < size; k++) {
-            if (open[0][k] && id == union.find(getUnionIndex(0, k))) {
-                return true;
-            }
-        }
-
-        return false;
+        return union.connected(top, getUnionIndex(i, j));
     }
 
     /**
      * @return Does percolate?
      */
     public boolean percolates() {
-        int[] top = new int[size];
-        int[] bot = new int[size];
-        for (int i = 0; i < size; i++) {
-            top[i] = -1;
-            bot[i] = -1;
-        }
-        for (int p = 0; p < size; p++) {
-            if (!open[0][p]) {
-                continue;
-            }
-            int topIndex = top[p];
-            if (topIndex == -1) {
-                top[p] = topIndex = union.find(getUnionIndex(0, p));
-            } else {
-                System.out.println("hit");
-            }
-            for (int q = 0; q < size; q++) {
-                if (!open[size - 1][q]) {
-                    continue;
-                }
-                int botIndex = bot[q];
-                if (botIndex == -1) {
-                    bot[q] = botIndex = union.find(getUnionIndex(size - 1, q));
-                }
-                if (topIndex == botIndex) {
-                    return true;
-                }
-
-            }
-
-        }
-        return false;
+        return union.connected(top, bottom);
     }
 
     /**
