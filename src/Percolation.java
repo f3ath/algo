@@ -33,6 +33,10 @@ public class Percolation {
         i = this.convertIndex(i);
         j = this.convertIndex(j);
 
+        if (this.open[i][j]) {
+            return;
+        }
+        
         this.open[i][j] = true;
 
         if (i > 0 && this.open[i - 1][j]) {
@@ -74,7 +78,10 @@ public class Percolation {
         }
 
         for (int k = 0; k < this.size; k++) {
-            if (this.union.connected(this.getUnionIndex(i, j), this.getUnionIndex(0, k))) {
+            if (
+                this.open[0][k] 
+                && this.union.connected(this.getUnionIndex(i, j), this.getUnionIndex(0, k))
+            ) {
                 return true;
             }
         }

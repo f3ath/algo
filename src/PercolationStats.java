@@ -1,3 +1,4 @@
+
 /**
  * @see http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
  * @author f3ath
@@ -6,24 +7,20 @@ public class PercolationStats {
 
     private int size;
     private int times;
-    private Percolation percolation;
     private int[] rand;
     private double mean = 0;
     private double stddev = 0;
 
     /**
      * Perform T independent experiments on an N-by-N grid
+     *
      * @param N
-     * @param T 
+     * @param T
      */
     public PercolationStats(int N, int T) {
-        if (N < 1) {
-            throw new java.lang.IllegalArgumentException("Invalid grid size");
-        }
+
         this.size = N;
-        if (T < 2) {
-            throw new java.lang.IllegalArgumentException("Invalid number of experiments");
-        }
+
         this.times = T;
         this.rand = new int[N * N];
 
@@ -64,7 +61,7 @@ public class PercolationStats {
     }
 
     /**
-     * @return low  endpoint of 95% confidence interval
+     * @return low endpoint of 95% confidence interval
      */
     public double confidenceLo() {
         return this.mean() - 1.96 * this.stddev() / Math.sqrt(this.times);
@@ -79,7 +76,8 @@ public class PercolationStats {
 
     /**
      * test client
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
         if (args.length < 2) {
@@ -88,7 +86,13 @@ public class PercolationStats {
         }
         int n = Integer.parseInt(args[0]);
         int t = Integer.parseInt(args[1]);
-
+        if (n < 1) {
+            throw new java.lang.IllegalArgumentException("Invalid grid size");
+        }
+        if (t < 2) {
+            throw new java.lang.IllegalArgumentException("Invalid number of experiments");
+        }
+        
         PercolationStats stats = new PercolationStats(n, t);
 
         System.out.format("mean                    = %f\n", stats.mean());
@@ -111,12 +115,12 @@ public class PercolationStats {
     }
 
     private double getExperimentResult() {
-        this.percolation = new Percolation(this.size);
+        Percolation p = new Percolation(this.size);
         this.shuffleRand(this.rand);
         int step = 0;
-        while (!this.percolation.percolates()) {
+        while (!p.percolates()) {
             int index = this.rand[step++];
-            this.percolation.open(index / this.size + 1, index % this.size + 1);
+            p.open(index / this.size + 1, index % this.size + 1);
         }
         return step / (double) (this.size * this.size);
     }
