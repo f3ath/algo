@@ -1,4 +1,7 @@
-
+/**
+ * @see http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
+ * @author f3ath
+ */
 public class PercolationStats {
 
     private int size;
@@ -8,6 +11,11 @@ public class PercolationStats {
     private double mean = 0;
     private double stddev = 0;
 
+    /**
+     * Perform T independent experiments on an N-by-N grid
+     * @param N
+     * @param T 
+     */
     public PercolationStats(int N, int T) {
         if (N < 1) {
             throw new java.lang.IllegalArgumentException("Invalid grid size");
@@ -41,23 +49,38 @@ public class PercolationStats {
         this.stddev = Math.sqrt(this.stddev / (T - 1));
     }
 
+    /**
+     * @return Sample mean of percolation threshold
+     */
     public double mean() {
         return this.mean;
     }
 
+    /**
+     * @return Sample standard deviation of percolation threshold
+     */
     public double stddev() {
         return this.stddev;
     }
 
+    /**
+     * @return low  endpoint of 95% confidence interval
+     */
     public double confidenceLo() {
         return this.mean() - 1.96 * this.stddev() / Math.sqrt(this.times);
     }
 
+    /**
+     * @return high endpoint of 95% confidence interval
+     */
     public double confidenceHi() {
         return this.mean() + 1.96 * this.stddev() / Math.sqrt(this.times);
-
     }
 
+    /**
+     * test client
+     * @param args 
+     */
     public static void main(String[] args) {
         if (args.length < 2) {
             System.err.println("Not enough args");

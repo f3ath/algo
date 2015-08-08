@@ -1,3 +1,7 @@
+/**
+ * @see http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
+ * @author f3ath
+ */
 public class Percolation {
 
     private WeightedQuickUnionUF union;
@@ -7,6 +11,10 @@ public class Percolation {
     static public void main(String[] args) {
     }
 
+    /**
+     * Create N-by-N grid, with all sites blocked
+     * @param N 
+     */
     public Percolation(int N) {
         if (N < 1) {
             throw new java.lang.IllegalArgumentException("Positive number expected");
@@ -17,7 +25,7 @@ public class Percolation {
     }
 
     /**
-     *
+     * Open site (row i, column j) if it is not open already
      * @param i
      * @param j
      */
@@ -42,10 +50,9 @@ public class Percolation {
     }
 
     /**
-     *
      * @param i
      * @param j
-     * @return
+     * @return Is site (row i, column j) open?
      */
     public boolean isOpen(int i, int j) {
         i = this.convertIndex(i);
@@ -54,10 +61,9 @@ public class Percolation {
     }
 
     /**
-     *
      * @param i
      * @param j
-     * @return
+     * @return Is site (row i, column j) full?
      */
     public boolean isFull(int i, int j) {
         i = this.convertIndex(i);
@@ -77,9 +83,7 @@ public class Percolation {
     }
 
     /**
-     * Does percolate?
-     *
-     * @return
+     * @return Does percolate?
      */
     public boolean percolates() {
         for (int k = 1; k <= this.size; k++) {
@@ -92,9 +96,10 @@ public class Percolation {
 
     /**
      * Convert 1-based to 0-based
+     * and check correctness
      *
      * @param i
-     * @return
+     * @return Converted index
      */
     private int convertIndex(int i) {
         i--;
@@ -105,10 +110,10 @@ public class Percolation {
     }
 
     /**
-     *
+     * Convert 2-dimensional index into 1-dimensional
      * @param i
      * @param j
-     * @return Index for union
+     * @return 1-dim index
      */
     private int getUnionIndex(int i, int j) {
         return this.size * i + j;
