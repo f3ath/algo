@@ -104,7 +104,7 @@ public class Percolation {
     private int convertIndex(int i) {
         i--;
         if (i < 0 || i >= this.size) {
-            throw new java.lang.IllegalArgumentException();
+            throw new java.lang.IndexOutOfBoundsException();
         }
         return i;
     }
