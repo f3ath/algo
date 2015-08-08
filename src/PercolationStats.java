@@ -89,15 +89,6 @@ public class PercolationStats {
         int n = Integer.parseInt(args[0]);
         int t = Integer.parseInt(args[1]);
 
-        if (n < 0) {
-            System.err.println("Not enough args");
-            return;
-        }
-        if (n < 0) {
-            System.err.println("Not enough args");
-            return;
-        }
-
         PercolationStats stats = new PercolationStats(n, t);
 
         System.out.format("mean                    = %f\n", stats.mean());

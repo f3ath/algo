@@ -8,9 +8,6 @@ public class Percolation {
     private int size;
     private boolean[][] open;
 
-    static public void main(String[] args) {
-    }
-
     /**
      * Create N-by-N grid, with all sites blocked
      * @param N 
@@ -24,6 +21,9 @@ public class Percolation {
         this.open = new boolean[this.size][this.size];
     }
 
+    public static void main(String[] args) {
+    }
+    
     /**
      * Open site (row i, column j) if it is not open already
      * @param i
