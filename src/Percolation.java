@@ -95,10 +95,36 @@ public class Percolation {
      * @return Does percolate?
      */
     public boolean percolates() {
-        for (int k = 1; k <= size; k++) {
-            if (isFull(size, k)) {
-                return true;
+        int[] top = new int[size];
+        int[] bot = new int[size];
+        for (int i = 0; i < size; i++) {
+            top[i] = -1;
+            bot[i] = -1;
+        }
+        for (int p = 0; p < size; p++) {
+            if (!open[0][p]) {
+                continue;
             }
+            int topIndex = top[p];
+            if (topIndex == -1) {
+                top[p] = topIndex = union.find(getUnionIndex(0, p));
+            } else {
+                System.out.println("hit");
+            }
+            for (int q = 0; q < size; q++) {
+                if (!open[size - 1][q]) {
+                    continue;
+                }
+                int botIndex = bot[q];
+                if (botIndex == -1) {
+                    bot[q] = botIndex = union.find(getUnionIndex(size - 1, q));
+                }
+                if (topIndex == botIndex) {
+                    return true;
+                }
+
+            }
+
         }
         return false;
     }

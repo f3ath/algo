@@ -47,7 +47,7 @@ public class PercolationStats {
         for (int i = 0; i < T; i++) {
             stddev += Math.pow(mean - results[i], 2);
         }
-        stddev = Math.sqrt(stddev / T);
+        stddev = Math.sqrt(stddev / (T - 1));
     }
 
     /**
