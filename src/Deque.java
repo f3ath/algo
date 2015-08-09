@@ -57,11 +57,15 @@ public class Deque<Item> implements Iterable<Item> {
 
         private int count = 0;
 
-        public void test(boolean result) {
+        public void check(boolean result) {
             if (!result) {
-                throw new RuntimeException("Test failed");
+                fail();
             }
             count++;
+        }
+
+        public void fail() {
+            throw new RuntimeException("Test failed");
         }
 
         @Override
@@ -185,51 +189,51 @@ public class Deque<Item> implements Iterable<Item> {
         Deque<String> deque = new Deque<>();
         String str = "";
 
-        test.test(deque.isEmpty());
-        test.test(0 == deque.size());
+        test.check(deque.isEmpty());
+        test.check(0 == deque.size());
         for (String s : deque) {
             str += s;
         }
-        test.test(str.equals(""));
+        test.check(str.equals(""));
 
         deque.addFirst("a");
         deque.addFirst("b");
         deque.addFirst("c");
-        test.test(3 == deque.size());
+        test.check(3 == deque.size());
 
         deque.addLast("x");
         deque.addLast("y");
         deque.addLast("z");
-        test.test(6 == deque.size());
+        test.check(6 == deque.size());
 
         str = "";
         for (String s : deque) {
             str += s;
         }
-        test.test(str.equals("cbaxyz"));
+        test.check(str.equals("cbaxyz"));
 
-        test.test(deque.removeFirst().equals("c"));
-        test.test(deque.removeFirst().equals("b"));
-        test.test(deque.removeLast().equals("z"));
-        test.test(deque.removeLast().equals("y"));
-        test.test(2 == deque.size());
-        test.test(!deque.isEmpty());
+        test.check(deque.removeFirst().equals("c"));
+        test.check(deque.removeFirst().equals("b"));
+        test.check(deque.removeLast().equals("z"));
+        test.check(deque.removeLast().equals("y"));
+        test.check(2 == deque.size());
+        test.check(!deque.isEmpty());
 
-        test.test(deque.removeLast().equals("x"));
-        test.test(deque.removeLast().equals("a"));
-        test.test(deque.isEmpty());
+        test.check(deque.removeLast().equals("x"));
+        test.check(deque.removeLast().equals("a"));
+        test.check(deque.isEmpty());
 
         try {
             deque.removeFirst();
-            test.test(false);
+            test.fail();
         } catch (NoSuchElementException e) {
-            test.test(true);
+            test.check(true);
         }
         try {
             deque.removeLast();
-            test.test(false);
+            test.fail();
         } catch (NoSuchElementException e) {
-            test.test(true);
+            test.check(true);
         }
 
         System.out.println(test);
