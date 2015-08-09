@@ -55,18 +55,18 @@ public class Deque<Item> implements Iterable<Item> {
 
     private static class Test {
 
-        public int c = 0;
+        private int count = 0;
 
-        public void test(boolean b) {
-            if (!b) {
+        public void test(boolean result) {
+            if (!result) {
                 throw new RuntimeException("Test failed");
             }
-            c++;
+            count++;
         }
 
         @Override
         public String toString() {
-            return String.format("Tests run: %d", c);
+            return String.format("Tests run: %d", count);
         }
     }
 
