@@ -27,11 +27,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
-            if (current < items.length) {
-                current++;
-                return items[current - 1];
+            if (current >= items.length) {
+                throw new NoSuchElementException();
+            } else {
+                return items[current++];
             }
-            throw new NoSuchElementException();
         }
 
         @Override
@@ -48,10 +48,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         private int count = 0;
 
         public void check(boolean result) {
-            if (!result) {
+            if (result) {
+                count++;
+            } else {
                 fail();
             }
-            count++;
         }
 
         public void fail() {
@@ -70,7 +71,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private static final boolean OCCUPIED = true;
     private static final boolean EMPTY = false;
-    
+
     private static final double MAX_CAPACITY_RATIO = (double) 3 / 4;
     private static final double MIN_CAPACITY_RATIO = (double) 1 / 4;
     private static final int RESIZE_FACTOR = 2;
