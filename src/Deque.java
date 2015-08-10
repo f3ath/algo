@@ -3,6 +3,7 @@ import java.util.NoSuchElementException;
 import java.util.Iterator;
 
 /**
+ * @see http://coursera.cs.princeton.edu/algs4/assignments/queues.html
  * @author f3ath
  * @param <Item>
  */

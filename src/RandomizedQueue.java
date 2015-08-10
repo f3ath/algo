@@ -2,13 +2,8 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
- *
+ * @see http://coursera.cs.princeton.edu/algs4/assignments/queues.html
  * @author f3ath
  * @param <Item>
  */
@@ -73,14 +68,19 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private int size = 0;
 
-    private final static boolean OCCUPIED = true;
-    private final static boolean EMPTY = false;
+    private static final boolean OCCUPIED = true;
+    private static final boolean EMPTY = false;
+    
+    private static final double MAX_CAPACITY_RATIO = (double) 3 / 4;
+    private static final double MIN_CAPACITY_RATIO = (double) 1 / 4;
+    private static final int RESIZE_FACTOR = 2;
+    private static final int INITIAL_CAPACITY = 4;
 
     /**
      * construct an empty randomized strQueue
      */
     public RandomizedQueue() {
-        storage = (Item[]) new Object[4];
+        storage = (Item[]) new Object[INITIAL_CAPACITY];
     }
 
     /**
@@ -107,8 +107,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public void enqueue(Item item) {
         storage[findRandomIndex(EMPTY)] = item;
         size++;
-        if (size > (double) storage.length * 3 / 4) {
-            storage = getCompressedStorage(storage.length * 2);
+        if (size > storage.length * MAX_CAPACITY_RATIO) {
+            storage = getStorageCopy(storage.length * RESIZE_FACTOR);
         }
     }
 
@@ -125,8 +125,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         Item result = storage[occupiedSlot];
         storage[occupiedSlot] = null;
         size--;
-        if (size < (double) storage.length / 4) {
-            storage = getCompressedStorage(storage.length / 2);
+        if (size < storage.length * MIN_CAPACITY_RATIO) {
+            storage = getStorageCopy(storage.length / RESIZE_FACTOR);
         }
         return result;
     }
@@ -150,7 +150,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      */
     @Override
     public Iterator<Item> iterator() {
-        return new RandomizedQueueIterator(getCompressedStorage(size));
+        return new RandomizedQueueIterator(getStorageCopy(size));
     }
 
     /**
@@ -167,12 +167,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     /**
-     * Get a compressed copy of the storage
+     * Get a (de)compressed copy of the storage
      *
      * @param newSize
      * @return
      */
-    private Item[] getCompressedStorage(int newSize) {
+    private Item[] getStorageCopy(int newSize) {
         Item[] newStorage = (Item[]) new Object[newSize];
         int newIndex = 0;
         for (Item item : storage) {
