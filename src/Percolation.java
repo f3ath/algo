@@ -27,6 +27,10 @@ public class Percolation {
         open = new boolean[size][size];
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
     }
 

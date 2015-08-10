@@ -180,6 +180,15 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     /**
+     * init deque
+     *
+     * @param item
+     */
+    private void init(Item item) {
+        last = first = new Node(item, null, null);
+    }
+
+    /**
      * unit testing
      *
      * @param args
@@ -237,14 +246,5 @@ public class Deque<Item> implements Iterable<Item> {
         }
 
         System.out.println(test);
-    }
-
-    /**
-     * init deque
-     *
-     * @param item
-     */
-    private void init(Item item) {
-        last = first = new Node(item, null, null);
     }
 }
