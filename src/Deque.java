@@ -140,7 +140,8 @@ public class Deque<Item> implements Iterable<Item> {
         }
         Node result = first;
         if (size == 1) {
-            first = last = null;
+            first = null;
+            last = null;
         } else {
             first = first.next;
             first.prev = null;
@@ -201,7 +202,7 @@ public class Deque<Item> implements Iterable<Item> {
         test.check(deque.isEmpty());
         test.check(0 == deque.size());
         for (String s : deque) {
-            str += s;
+            str = str.concat(s);
         }
         test.check(str.equals(""));
 
@@ -217,7 +218,7 @@ public class Deque<Item> implements Iterable<Item> {
 
         str = "";
         for (String s : deque) {
-            str += s;
+            str = str.concat(s);
         }
         test.check(str.equals("cbaxyz"));
 

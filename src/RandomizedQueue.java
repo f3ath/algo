@@ -1,6 +1,6 @@
 
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,7 +14,7 @@ import java.util.Iterator;
  */
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    class RandomizedQueueIterator implements Iterator<Item> {
+    private class RandomizedQueueIterator implements Iterator<Item> {
 
         private final Item[] items;
         private int current;
@@ -34,8 +34,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         public Item next() {
             if (current < items.length) {
                 current++;
+                return items[current - 1];
             }
-            return items[current - 1];
+            throw new NoSuchElementException();
         }
 
         @Override
@@ -72,8 +73,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private int size = 0;
 
-    private final boolean OCCUPIED = true;
-    private final boolean EMPTY = false;
+    private final static boolean OCCUPIED = true;
+    private final static boolean EMPTY = false;
 
     /**
      * construct an empty randomized strQueue
@@ -107,7 +108,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         storage[findRandomIndex(EMPTY)] = item;
         size++;
         if (size > (double) storage.length * 3 / 4) {
-            storage = Arrays.copyOf(storage, storage.length * 2);
+            storage = getCompressedStorage(storage.length * 2);
         }
     }
 
@@ -117,6 +118,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * @return
      */
     public Item dequeue() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
         int occupiedSlot = findRandomIndex(OCCUPIED);
         Item result = storage[occupiedSlot];
         storage[occupiedSlot] = null;
@@ -133,6 +137,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * @return
      */
     public Item sample() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
         return storage[findRandomIndex(OCCUPIED)];
     }
 
@@ -146,6 +153,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return new RandomizedQueueIterator(getCompressedStorage(size));
     }
 
+    /**
+     *
+     * @param occupied
+     * @return
+     */
     private int findRandomIndex(boolean occupied) {
         int index;
         do {
@@ -155,7 +167,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     /**
-     * Get compressed copy of the storage
+     * Get a compressed copy of the storage
      *
      * @param newSize
      * @return
@@ -181,6 +193,19 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         RandomizedQueue<String> strQueue = new RandomizedQueue<>();
         test.check(strQueue.isEmpty());
         test.check(0 == strQueue.size());
+
+        try {
+            strQueue.dequeue();
+            test.fail();
+        } catch (NoSuchElementException e) {
+            test.check(true);
+        }
+        try {
+            strQueue.sample();
+            test.fail();
+        } catch (NoSuchElementException e) {
+            test.check(true);
+        }
 
         strQueue.enqueue("a");
         test.check(!strQueue.isEmpty());
@@ -208,7 +233,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         for (int i = 0; i < size; i++) {
             test.check(1 == counts[i]);
         }
-        
+
         System.out.println(test);
     }
 }
