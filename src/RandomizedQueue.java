@@ -41,7 +41,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     /**
-     *
+     * Unit test nano-framework
      */
     private static class Test {
 
@@ -51,12 +51,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             if (result) {
                 count++;
             } else {
-                fail();
+                throw new RuntimeException("Test failed");
             }
         }
 
+        public void pass() {
+            check(true);
+        }
+
         public void fail() {
-            throw new RuntimeException("Test failed");
+            check(false);
         }
 
         @Override
