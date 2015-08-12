@@ -1,12 +1,15 @@
-
 import java.util.Comparator;
 
+/**
+ * 2D point
+ * @author f3ath
+ */
 public class Point implements Comparable<Point> {
 
     /**
-     *
+     * Compare points a and b by their slope relative to this point
      */
-    public class BySlope implements Comparator<Point> {
+    private class BySlope implements Comparator<Point> {
 
         @Override
         public int compare(Point a, Point b) {
@@ -56,11 +59,17 @@ public class Point implements Comparable<Point> {
         }
     }
 
-    // compare points by slope
     public final Comparator<Point> SLOPE_ORDER = new BySlope();
 
-    private final int x;                              // x coordinate
-    private final int y;                              // y coordinate
+    /**
+     * x coordinate
+     */
+    private final int x;
+    
+    /**
+     * y coordinate
+     */
+    private final int y;
 
     /**
      * create the point (x, y)
@@ -114,11 +123,10 @@ public class Point implements Comparable<Point> {
     }
 
     /**
-     * is this point lexicographically smaller than that one? comparing y-coordinates and breaking
-     * ties by x-coordinates
+     * Compare y-coordinates breaking ties by x-coordinates
      *
      * @param that
-     * @return
+     * @return is this point lexicographically smaller than that one?
      */
     @Override
     public int compareTo(Point that) {
@@ -136,9 +144,7 @@ public class Point implements Comparable<Point> {
     }
 
     /**
-     * return string representation of this point
-     *
-     * @return
+     * @return string representation of this point
      */
     @Override
     public String toString() {
@@ -146,7 +152,6 @@ public class Point implements Comparable<Point> {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {

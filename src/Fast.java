@@ -1,24 +1,33 @@
-
 import java.io.File;
 import java.util.Arrays;
 
+/**
+ * Fast line detection
+ * @author f3ath
+ */
 public class Fast {
 
-    private Point[] points;
+    private final Point[] points;
 
+    /**
+     * @param file 
+     */
     private Fast(String file) {
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
 
+        // get points from the file
         In in = new In(new File(file));
         points = new Point[in.readInt()];
         for (int i = 0; i < points.length; i++) {
             points[i] = new Point(in.readInt(), in.readInt());
             points[i].draw();
         }
-
     }
 
+    /**
+     * @param args 
+     */
     public static void main(String[] args) {
         Fast fast = new Fast(args[0]);
         fast.run();
@@ -30,6 +39,10 @@ public class Fast {
         }
     }
 
+    /**
+     * Find all lines going though the point
+     * @param point 
+     */
     private void findLinesThrough(Point point) {
         Point[] pointsBySlope = points.clone();
         Arrays.sort(pointsBySlope, point.SLOPE_ORDER);
@@ -57,7 +70,10 @@ public class Fast {
         }
     }
     
-    
+    /**
+     * Draw the line, print to stdout
+     * @param line 
+     */
     private void outputLine(Point[] line) {
         System.out.print(line[0]);
         for (int i = 1; i < line.length; i++) {
