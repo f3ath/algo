@@ -3,14 +3,14 @@ import java.io.File;
 
 public class Brute {
 
-    protected Point[] points;
+    private Point[] points;
 
     /**
      * Get points from a file
      *
      * @param file file name
      */
-    public Brute(String file) {
+    private Brute(String file) {
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
 
@@ -27,7 +27,7 @@ public class Brute {
         brute.run();
     }
 
-    public void run() {
+    private void run() {
         for (int a = 0; a < points.length - 3; a++) {
             for (int b = a + 1; b < points.length - 2; b++) {
                 for (int c = b + 1; c < points.length - 1; c++) {
@@ -43,7 +43,7 @@ public class Brute {
         }
     }
 
-    protected void outputLine(Point[] line) {
+    private void outputLine(Point[] line) {
         System.out.print(line[0]);
         for (int i = 1; i < line.length; i++) {
             System.out.print(" -> " + line[i]);

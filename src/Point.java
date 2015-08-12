@@ -8,16 +8,10 @@ public class Point implements Comparable<Point> {
      */
     public class BySlope implements Comparator<Point> {
 
-        private final Point my;
-
-        public BySlope(Point point) {
-            my = point;
-        }
-
         @Override
         public int compare(Point a, Point b) {
-            double toA = my.slopeTo(a);
-            double toB = my.slopeTo(b);
+            double toA = Point.this.slopeTo(a);
+            double toB = Point.this.slopeTo(b);
             if (toA > toB) {
                 return 1;
             } else if (toA < toB) {
@@ -63,7 +57,7 @@ public class Point implements Comparable<Point> {
     }
 
     // compare points by slope
-    public final Comparator<Point> SLOPE_ORDER;
+    public final Comparator<Point> SLOPE_ORDER = new BySlope();
 
     private final int x;                              // x coordinate
     private final int y;                              // y coordinate
@@ -77,7 +71,6 @@ public class Point implements Comparable<Point> {
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
-        SLOPE_ORDER = new BySlope(this);
     }
 
     /**

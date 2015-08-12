@@ -1,10 +1,22 @@
 
+import java.io.File;
 import java.util.Arrays;
 
-public class Fast extends Brute {
+public class Fast {
 
-    public Fast(String file) {
-        super(file);
+    private Point[] points;
+
+    private Fast(String file) {
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+
+        In in = new In(new File(file));
+        points = new Point[in.readInt()];
+        for (int i = 0; i < points.length; i++) {
+            points[i] = new Point(in.readInt(), in.readInt());
+            points[i].draw();
+        }
+
     }
 
     public static void main(String[] args) {
@@ -12,9 +24,9 @@ public class Fast extends Brute {
         fast.run();
     }
 
-    @Override
-    public void run() {
-        for (Point p : points) {
+    private void run() {
+        for (Point point : points) {
+            findLinesThrough(point);
         }
     }
 
@@ -43,6 +55,15 @@ public class Fast extends Brute {
             }
             lineStart = nextLineStart; // moving to the next line
         }
-
+    }
+    
+    
+    private void outputLine(Point[] line) {
+        System.out.print(line[0]);
+        for (int i = 1; i < line.length; i++) {
+            System.out.print(" -> " + line[i]);
+        }
+        System.out.println("");
+        line[0].drawTo(line[line.length - 1]);
     }
 }
