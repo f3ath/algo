@@ -102,10 +102,12 @@ public class Percolation {
         int bottomRow = size - 1;
         int offset = size * bottomRow;
         for (int col = 0; col < size; col++) {
-            if (open[bottomRow][col] && union.find(offset + col) == topId) {
+            if (open[bottomRow][col]
+                    && (col == 0 || open[bottomRow][col - 1]) // skip consequent 
+                    && union.find(offset + col) == topId) {
                 return true;
             }
-        }
+        } 
         return false;
     }
 
